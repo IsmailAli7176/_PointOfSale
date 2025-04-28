@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PointOfSale.Models.Products>
+
+@{
+    ViewData["Title"] = "Product List";
+    var successMessage = TempData["SuccessMessage"] as string;
+}
+
+<h1>Product List</h1>
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success">
+        @successMessage
+    </div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.First().Product_Name)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Product_Price)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Categories.Cat_Name)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Brands.Brand_Name)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Product_Name</td>
+                <td>@item.Product_Price.ToString("C")</td>
+                <td>@item.Categories?.Cat_Name</td>
+                <td>@item.Brands?.Brand_Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Product_Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Product_Id" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Product_Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

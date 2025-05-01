@@ -16,7 +16,10 @@ namespace PointOfSale.Models
 
         [Required]
         [DisplayName("Product Price")]
-        public int Product_Price { get; set; }
+        public decimal Product_Price { get; set; }
+        [Required]
+        [DisplayName("Product Seling Price")]
+        public decimal Product_Seling_Price { get; set; }
 
         [Required]
         [DisplayName("Category")]
@@ -28,6 +31,6 @@ namespace PointOfSale.Models
         [DisplayName("Brand")]
         [ForeignKey("Brand")]
         public int Brand_Id { get; set; }
-        public Brand Brands { get; set; }
+        public Brand? Brands { get; set; }
     }
 }

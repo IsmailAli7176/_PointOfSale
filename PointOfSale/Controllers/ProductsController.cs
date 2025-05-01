@@ -36,23 +36,29 @@ namespace PointOfSale.Controllers
             return View();
         }
 
-        // POST: Products/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Products product)
         {
-            
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Product created successfully!";
-                return RedirectToAction(nameof(Index));
-            
+            if (product.Product_Seling_Price < product.Product_Price)
+            {
+                ModelState.AddModelError(nameof(product.Product_Seling_Price), "Selling price cannot be lower than product price.");
+            }
 
-            ViewBag.Cat_Id = new SelectList(_context.Categories, "Cat_Id", "Cat_Name", product.Cat_Id);
-            ViewBag.Brand_Id = new SelectList(_context.Brands, "Brand_Id", "Brand_Name", product.Brand_Id);
-            return View(product);
+            if (!ModelState.IsValid)
+            {
+                // Rebuild dropdowns for redisplay
+                ViewBag.Cat_Id = new SelectList(_context.Categories, "Cat_Id", "Cat_Name", product.Cat_Id);
+                ViewBag.Brand_Id = new SelectList(_context.Brands, "Brand_Id", "Brand_Name", product.Brand_Id);
+                return View(product);
+            }
+
+            _context.Add(product);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Product created successfully!";
+            return RedirectToAction(nameof(Index));
         }
-
         // GET: Products/Edit/
         public async Task<IActionResult> Edit(int? id)
         {

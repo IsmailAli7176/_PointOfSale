@@ -18,6 +18,13 @@ namespace PointOfSale.Models
         [DisplayName("Product Price")]
         public decimal Product_Price { get; set; }
         [Required]
+        [DisplayName("Product Quantity")]
+        public decimal Product_Quantity { get; set; }
+
+        [Required]
+        [DisplayName("Product Total_Price")]
+        public decimal Product_Total_Price { get; set; }
+        [Required]
         [DisplayName("Product Seling Price")]
         public decimal Product_Seling_Price { get; set; }
 

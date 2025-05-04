@@ -1,42 +1,50 @@
 ﻿@model PointOfSale.Models.Products
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Product";
 }
 
-<h1>Delete</h1>
+<h2>Delete Product</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Products</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Product_Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Product_Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Product_Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Product_Price)
-        </dd>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Product_Seling_Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Categories)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Categories.Cat_Name)
-        </dd>
-    </dl>
+<h4>Are you sure you want to delete this product?</h4>
 
-    <form asp-action="Delete" method="post">
-        <input type="hidden" asp-for="Product_Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+<div class="form-group">
+    <label><strong>Name:</strong></label>
+    <p class="form-control-plaintext">@Model.Product_Name</p>
 </div>
+
+<div class="form-group">
+    <label><strong>Price:</strong></label>
+    <p class="form-control-plaintext">@Model.Product_Price</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Quantity:</strong></label>
+    <p class="form-control-plaintext">@Model.Product_Quantity</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Total Price:</strong></label>
+    <p class="form-control-plaintext">@Model.Product_Total_Price</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Selling Price:</strong></label>
+    <p class="form-control-plaintext">@Model.Product_Seling_Price</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Category:</strong></label>
+    <p class="form-control-plaintext">@Model.Categories.Cat_Name</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Brand:</strong></label>
+    <p class="form-control-plaintext">@Model.Brands.Brand_Name</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Product_Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

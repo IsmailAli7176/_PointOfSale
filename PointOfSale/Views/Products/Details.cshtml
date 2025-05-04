@@ -1,39 +1,45 @@
 ﻿@model PointOfSale.Models.Products
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Product Details";
 }
 
-<h1>Details</h1>
+<h2>Product Details</h2>
 
-<div>
-    <h4>Products</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Product_Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Product_Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Product_Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Product_Price)
-        </dd>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Product_Seling_Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Categories)
-        </dt>   
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Categories.Cat_Name)
-        </dd>
-    </dl>
+<div class="form-group">
+    <label><strong>Name:</strong></label>
+    <p class="form-control-plaintext">@Model.Product_Name</p>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Product_Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="form-group">
+    <label><strong>Price:</strong></label>
+    <p class="form-control-plaintext">@Model.Product_Price</p>
 </div>
+
+<div class="form-group">
+    <label><strong>Quantity:</strong></label>
+    <p class="form-control-plaintext">@Model.Product_Quantity</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Total Price:</strong></label>
+    <p class="form-control-plaintext">@Model.Product_Total_Price</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Selling Price:</strong></label>
+    <p class="form-control-plaintext">@Model.Product_Seling_Price</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Category:</strong></label>
+    <p class="form-control-plaintext">@Model.Categories.Cat_Name</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Brand:</strong></label>
+    <p class="form-control-plaintext">@Model.Brands.Brand_Name</p>
+</div>
+
+<a asp-action="Edit" asp-route-id="@Model.Product_Id" class="btn btn-primary">Edit</a>
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>

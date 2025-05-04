@@ -40,36 +40,42 @@ namespace PointOfSale.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Products product)
         {
-            if (product.Product_Seling_Price < product.Product_Price)
+            // Validation: Selling price must be greater than cost price
+            if (product.Product_Seling_Price <= product.Product_Price)
             {
                 ModelState.AddModelError(nameof(product.Product_Seling_Price), "Selling price cannot be lower than product price.");
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                // Rebuild dropdowns for redisplay
-                ViewBag.Cat_Id = new SelectList(_context.Categories, "Cat_Id", "Cat_Name", product.Cat_Id);
-                ViewBag.Brand_Id = new SelectList(_context.Brands, "Brand_Id", "Brand_Name", product.Brand_Id);
-                return View(product);
+                // Calculation: Total price
+                product.Product_Total_Price = (int)(product.Product_Price * product.Product_Quantity);
+
+                _context.Add(product);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
 
-            _context.Add(product);
-            await _context.SaveChangesAsync();
+            // Repopulate dropdowns for redisplay
+            ViewBag.Cat_Id = new SelectList(_context.Categories, "Cat_Id", "Cat_Name", product.Cat_Id);
+            ViewBag.Brand_Id = new SelectList(_context.Brands, "Brand_Id", "Brand_Name", product.Brand_Id);
 
-            TempData["SuccessMessage"] = "Product created successfully!";
-            return RedirectToAction(nameof(Index));
+            return View(product);
         }
+
         // GET: Products/Edit/
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Products/Edit/5
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null) return NotFound();
+            if (id == 0) return NotFound();
 
             var product = await _context.Products
                 .Include(p => p.Categories)
                 .Include(p => p.Brands)
                 .FirstOrDefaultAsync(p => p.Product_Id == id);
 
-            if (product == null) return NotFound();
+            if (product == null)
+                return NotFound();
 
             ViewBag.Cat_Id = new SelectList(_context.Categories, "Cat_Id", "Cat_Name", product.Cat_Id);
             ViewBag.Brand_Id = new SelectList(_context.Brands, "Brand_Id", "Brand_Name", product.Brand_Id);
@@ -77,19 +83,20 @@ namespace PointOfSale.Controllers
             return View(product);
         }
 
-        // POST: Products/Edit/5
+        // POST: Products/Edit/11
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Product_Id,Cat_Id,Brand_Id,Product_Name,Product_Price")] Products product)
+        public async Task<IActionResult> Edit(Products product)
         {
-            if (id != product.Product_Id) return NotFound();
-
+           
             if (ModelState.IsValid)
             {
                 try
                 {
+                    product.Product_Total_Price = product.Product_Price * product.Product_Quantity;
                     _context.Update(product);
                     await _context.SaveChangesAsync();
+
                     TempData["SuccessMessage"] = "Product updated successfully!";
                     return RedirectToAction(nameof(Index));
                 }
@@ -104,8 +111,10 @@ namespace PointOfSale.Controllers
 
             ViewBag.Cat_Id = new SelectList(_context.Categories, "Cat_Id", "Cat_Name", product.Cat_Id);
             ViewBag.Brand_Id = new SelectList(_context.Brands, "Brand_Id", "Brand_Name", product.Brand_Id);
+
             return View(product);
         }
+
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
